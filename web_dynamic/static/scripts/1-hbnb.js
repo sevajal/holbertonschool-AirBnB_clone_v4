@@ -1,14 +1,19 @@
 $( document ).ready(function() {
-    let checkboxes = $("input[type=checkbox][data-id=:amenity_id]")
-    let enabledAmenities = [];
-    // Attach a change event handler to the checkboxes.
+    let checkboxes = $("input[type=checkbox][name=amenities]")
+    let enabledAmenities = {};
+    let amenities_names = [];
+
     checkboxes.change(function() {
-    enabledAmenities = checkboxes
-        .filter(":checked") // Filter out unchecked boxes.
-        .map(function() { // Extract values using jQuery map.
-        return this.value;
-        }) 
-        .get() // Get array.
-    $("h4.amenities").text(enabledAmenities);
+      if ($(this).is(':checked')) {
+        enabledAmenities[$(this).data('id')] = $(this).data('name')
+      } else {
+        delete enabledAmenities[$(this).data('id')]
+      }
+      amenities_names = Object.values(enabledAmenities);
+      if (amenities_names.length == 0) {
+        $(".amenities h4").html("&nbsp;");
+      } else {
+        $(".amenities h4").text(amenities_names.join(", "));
+      }
     });
 });
