@@ -38,10 +38,22 @@ $( document ).ready(function() {
       data: '{}',
       success: function (data) { 
         for (const place of data) {
-          const title = $("<h2></h2>").html(place.name);
+          //const title = $("<h2></h2>").html(place.name);
           //const title_box = $('.title_box').append(title);
-          const article = "<article>";
-          $('.places').append(article, title);
+          const article = `
+          <article>
+            <h2>${place.name}</h2>
+            <div class="price_by_night">$${place.price_by_night}</div>
+            <div class="information">
+              <div class="max_guest">${place.max_guest} Guests</div>
+              <div class="number_rooms">${place.number_rooms} Bedrooms</div>
+              <div class="number_bathrooms">${place.number_bathrooms} Bathrooms</div>
+            </div>
+            <div class="description">
+              ${place.description}
+            </div>
+          </article>`;
+          $('.places').append(article);
           console.log(place.id);
         }
         console.log(data);
