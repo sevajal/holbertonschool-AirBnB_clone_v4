@@ -40,23 +40,47 @@ $( document ).ready(function() {
         for (const place of data) {
           //const title = $("<h2></h2>").html(place.name);
           //const title_box = $('.title_box').append(title);
+          $.get("http://0.0.0.0:5001/api/v1/users/", function(users)
+          {
+          for (user of users) {
+            if (user.id == place.user_id) {
+              owner = user
+            }
+          }
+          let gs = "";
+          let nr = "";
+          let nb = "";          
+          if (place.max_guest != 1) {
+            gs = "s";
+          }
+          if (place.number_rooms != 1) {
+            nr = "s";
+          }
+          if (place.number_bathrooms != 1) {
+            nb = "s";
+          }
+
           const article = `
           <article>
-            <h2>${place.name}</h2>
-            <div class="price_by_night">$${place.price_by_night}</div>
+            <div class="title_box">
+              <h2>${place.name}</h2>
+              <div class="price_by_night">$${place.price_by_night}</div>
+            </div>  
             <div class="information">
-              <div class="max_guest">${place.max_guest} Guests</div>
-              <div class="number_rooms">${place.number_rooms} Bedrooms</div>
-              <div class="number_bathrooms">${place.number_bathrooms} Bathrooms</div>
+              <div class="max_guest">${place.max_guest} Guest${gs}</div>
+              <div class="number_rooms">${place.number_rooms} Bedroom${nr}</div>
+              <div class="number_bathrooms">${place.number_bathrooms} Bathroom${nb}</div>
+            </div>
+            <div class="user">
+            <b>Owner:</b> ${owner.first_name} ${owner.last_name}
             </div>
             <div class="description">
               ${place.description}
             </div>
           </article>`;
           $('.places').append(article);
-          console.log(place.id);
+          });
         }
-        console.log(data);
         //alert(JSON.stringify(data));
       },
       error: function(){
