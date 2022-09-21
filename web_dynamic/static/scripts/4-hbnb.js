@@ -36,7 +36,6 @@ $( document ).ready(function() {
       processData: false,
       data: JSON.stringify({amenities: Object.keys(enabledAmenities)}),
       success: function (data) {
-        console.log(data);
         for (const place of data) {
           $.get("http://0.0.0.0:5001/api/v1/users/", function(users)
           {
