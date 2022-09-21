@@ -2,12 +2,14 @@ $( document ).ready(function() {
     let checkboxes = $("input[type=checkbox][name=amenities]")
     let enabledAmenities = {};
     let amenities_names = [];
-
+    let am_ids = [];
     checkboxes.change(function() {
       if ($(this).is(':checked')) {
         enabledAmenities[$(this).data('id')] = $(this).data('name')
+        am_ids.push($(this).data('id'));
       } else {
         delete enabledAmenities[$(this).data('id')]
+        delete am_ids[this];
       }
       amenities_names = Object.values(enabledAmenities);
       if (amenities_names.length == 0) {
@@ -16,7 +18,6 @@ $( document ).ready(function() {
         $(".amenities h4").text(amenities_names.join(", "));
       }
     });
-
     $.get("http://0.0.0.0:5001/api/v1/status/", function(Status)
     {
       if (Status.status == 'OK') {
@@ -33,7 +34,7 @@ $( document ).ready(function() {
       dataType: 'json',
       contentType: 'application/json',
       processData: false,
-      data: JSON.stringify(enabledAmenities),
+      data: JSON.stringify({amenities: Object.keys(enabledAmenities)}),
       success: function (data) {
         console.log(data);
         for (const place of data) {
